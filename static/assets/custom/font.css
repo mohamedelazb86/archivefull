@@ -1,0 +1,27 @@
+@font-face {
+    font-family: myfont;
+    src: url(Cairo-VariableFont_slnt,wght.ttf);
+  }
+  body{
+    font-family:myfont ;
+    font-style: italic;
+  }
+  h3{
+    color:red;
+    font-size: large;
+    font-weight: bolder;
+  }
+  h4{
+    color: blue;
+    font-size:small;
+    font-weight: bolder;
+  }
+  th{
+    color: blueviolet;
+    background-color: aquamarine;
+  }
+  td{
+    font-size: large;
+    color: brown;
+    background-color: azure;
+  }
