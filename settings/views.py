@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from settings.models import Document_type,Sector
 from django.contrib import messages
+from document.models import Document
+from django.db.models import Count
 
 def document_type(request):
     document_type=Document_type.objects.all()
@@ -97,4 +99,26 @@ def edit_sector(request):
         sector.save()
         messages.success(request,'تم التعديل بنجاح ')
         return redirect('/sector')
+    
+def dashbord(request):
+
+    sector=Sector.objects.all().count()
+        
+    # Group orders by status and count them
+    document_sector_counts = Document.objects.values('contractor__sector__name').annotate(count=Count('id'))
+
+    # Prepare data for Chart.js
+    sector_labels = [entry['contractor__sector__name'] for entry in document_sector_counts]
+    sector_data = [entry['count'] for entry in document_sector_counts]
+
+    context = {
+        'sector_labels' : sector_labels,
+        'sector_data' : sector_data,
+
+        'sector':sector,
+    }
+
+    return render(request,'settings/dashbord.html',context)
+
+
 

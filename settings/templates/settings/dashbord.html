@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    لوحة التحكم
+{% endblock title %}
+
+
+{% block page_title %}
+   <h3>لوحة التحكم</h3> 
+{% endblock page_title %}
+    
+ 
+ {% block css %}
+     <!--  BEGIN CUSTOM STYLE FILE  -->
+     <link href="{% static 'assets/css/scrollspyNav.css' %}" rel="stylesheet" type="text/css" />
+     <link href="{% static 'assets/css/components/cards/card.css' %}" rel="stylesheet" type="text/css" />
+     <!--  END CUSTOM STYLE FILE  --> 
+ {% endblock css %}
+       
+
+{% block body %}
+<div class="row p-3">
+
+    <div class="card component-card_1 col-2" style="background-color: rgb(191, 201, 54);">
+        <div class="card-body">
+            <div class="icon-svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+            </div>
+            <h2 style="color: rgb(226, 12, 12);" class="card-title">القطاعات</h2>
+         <p style="color: rgb(10, 13, 238); font-size: xx-large;" class="card-text">{{sector}}</p>
+            <a href="{% url 'settings:sector' %}">المزيد</a>
+        </div>
+    </div>
+    <div class="card component-card_1 col-2" style="background-color: rgb(41, 104, 175);">
+        <div class="card-body">
+            <div class="icon-svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+            </div>
+            <h2 style="color: rgb(226, 12, 12);" class="card-title">القطاعات</h2>
+            <p class="card-text">Mauris nisi felis, placerat in volutpat id, varius et sapien.</p>
+        </div>
+    </div>
+    <div class="card component-card_1 col-2" style="background-color: rgb(81, 185, 33);">
+        <div class="card-body">
+            <div class="icon-svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+            </div>
+            <h5 class="card-title">Simple</h5>
+            <p class="card-text">Mauris nisi felis, placerat in volutpat id, varius et sapien.</p>
+        </div>
+    </div>
+    <div class="card component-card_1 col-2" style="background-color: rgb(219, 53, 11);">
+        <div class="card-body">
+            <div class="icon-svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+            </div>
+            <h5 class="card-title">Simple</h5>
+            <p class="card-text">Mauris nisi felis, placerat in volutpat id, varius et sapien.</p>
+        </div>
+    </div>
+    <div class="card component-card_1 col-2" style="background-color: rgb(201, 190, 45);">
+        <div class="card-body">
+            <div class="icon-svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+            </div>
+            <h5 class="card-title">Simple</h5>
+            <p class="card-text">Mauris nisi felis, placerat in volutpat id, varius et sapien.</p>
+        </div>
+    </div>
+    <div class="card component-card_1 col-2" style="background-color: rgb(28, 61, 124);">
+        <div class="card-body">
+            <div class="icon-svg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+            </div>
+            <h5 class="card-title">Simple</h5>
+            <p class="card-text">Mauris nisi felis, placerat in volutpat id, varius et sapien.</p>
+        </div>
+    </div>
+
+   
+</div>
+
+<div id="chartBar" class="col-xl-6 layout-spacing" style="margin-top: 20px;">
+    <div class="statbox widget box box-shadow">
+        <div class="widget-header">                                
+            <div class="row">
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                    <h4>Simple Bar</h4> 
+                </div>
+            </div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <div id="documentsectorid" class=""></div>
+
+           
+        </div>
+    </div>
+</div>
+
+
+{% endblock body %}
+    
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+     <script src="{% static 'assets/js/scrollspyNav.js' %}"></script>
+     <script src="{% static 'plugins/apex/apexcharts.min.js' %}"></script>
+     <script src="{% static 'plugins/apex/custom-apexcharts.js' %}"></script>
+     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script>                                             
+        var sBar = {
+            chart: {
+                height: 350,
+                type: 'bar',
+                toolbar: {
+                  show: false,
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            series: [{
+                data: {{sector_data|safe}}
+            }],
+            xaxis: {
+                categories: {{sector_labels|safe}},
+            }
+        }
+        
+        var chart = new ApexCharts(
+            document.querySelector("#documentsectorid"),
+            sBar
+        );
+        
+        chart.render();</script>
+    
+    
+{% endblock js %}
+    
+    

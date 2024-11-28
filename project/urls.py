@@ -20,14 +20,20 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from settings.views import dashbord
+
 urlpatterns = [
     path('accounts/',include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('',include('settings.urls')),
 
     path('contractor/',include('contractor.urls')),
+    path('document/',include('document.urls')),
+    path('search/',include('search.urls')),
 
     path('summernote/', include('django_summernote.urls')),
+
+    path('',dashbord),
     path('admin/', admin.site.urls),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -218,7 +218,7 @@
                             data-notes="{{object.notes}}"
                             
                             >تعديل</a>
-                            <a class="dropdown-item" href="#">إضافة مستند</a>
+                            <a class="dropdown-item" href="{% url 'contractor:add-document' object.id %}">إضافة مستند</a>
                             <a class="dropdown-item" href="#">عرض مستند</a>
                           
                         </div>

@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block title %}
+     البحث عن مقاول
+{% endblock title %}
+
+{% block page_title %}
+    <h4> البحث عن مقاول</h4>
+{% endblock page_title %}
+
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.0/css/pikaday.min.css"> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.0/pikaday.min.js"></script>
+ <!-- BEGIN PAGE LEVEL CUSTOM STYLES -->
+ <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/datatables.css' %}">
+ <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/custom_dt_html5.css' %}">
+ <link rel="stylesheet" type="text/css" href="{% static 'plugins/table/datatable/dt-global_style.css' %}">
+ <!-- END PAGE LEVEL CUSTOM STYLES -->  
+{% endblock css %}
+
+
+{% block body %}
+
+ {% include 'message.py' %}
+
+<div class="card component-card_1 col-12">
+    <div class="card-body">
+
+        <form action="{% url 'search:search' %}" method="post">
+            {% csrf_token %}
+
+            <div class="row">
+                                        
+                <div class="col-xl-1">
+                    <div class="form-group">
+                        <label >الكود</label>
+                        <input class="form-control form-control-lg" type="text" name="code" id="code" onkeyup="fetchContractorData()">
+                    </div>
+                </div>
+
+                <div class="col-xl-3">
+                    <div class="form-group">
+                        <label >الأسم</label>
+                        <input class="form-control form-control-lg" type="text" name="name" id="name">
+                    </div>
+                </div>
+
+                <div class="col-2">
+                                        
+                    
+                    <label > القطاع</label>
+                    <select class="form-control form-control-lg" id="sector" name="sector" >
+                        <option value="all">  كل القطاعات</option>
+                    
+                    {% for item in sectors %}
+                        <option value="{{item.id}}" style="padding: 20px;">{{item}}</option>
+                    {% endfor %}
+                        
+                    </select>
+                </div>
+
+                <div class="col-xl-2">
+                    <label >من</label>
+                    <input type="text" class="form-control" id="date_from" name="date_from" placeholder="Select a date">
+                </div>
+
+                <div class="col-xl-2">
+                    <label >إلى</label>
+                    <input type="text" class="form-control" id="date_to" name="date_to" placeholder="Select a date">
+                </div>
+
+                <button class="btn btn-primary btn-rounded mb-2">بحث عن مقاول</button>
+                
+                
+        
+            </div>
+     </form>
+       
+        
+    </div>
+</div>
+
+<div style="padding: 20px;" class="col">
+    <table id="html5-extension" class="table table-hover non-hover" style="width:100%">
+        <thead>
+            <tr>
+                <th>المسلسل</th>
+                <th>البيان</th>
+                <th>المستند</th>
+                <th>التاريخ</th>
+                <th>نوع المستند</th>
+                <th>المقاول</th>
+                <th>ملاحظات</th>
+              
+                <th class="dt-no-sorting">العمليات</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for object in documents %}
+
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{object.statment}} </td>
+                <td>{{object.file.url}} </td>
+                <td>{{object.date|date:'Y-m-d'}}</td>
+                <td>{{object.document_type}}</td>
+                <td>{{object.contractor}}</td>
+                <td>{{object.notes}}</td>
+               
+                
+                <td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-dark btn-sm">العمليات</button>
+                        <button type="button" class="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuReference1">
+                            <a class="dropdown-item" href="#">حذف</a>
+                            <a class="dropdown-item" href="#">عرض</a>
+                           
+                        </div>
+                        </div>
+                </td>
+            </tr>
+        {% endfor %}
+           
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock body %}
+    
+
+{% block js %}
+<script> 
+    document.addEventListener('DOMContentLoaded', function() { 
+        new Pikaday({  
+            field: document.getElementById('date_to'), 
+            format: 'd-m-Y', // Set your desired date format 
+            defaultDate: new Date(), // Set today's date as the default 
+            toString(date, format) { 
+                // Customize the date format displayed in the input 
+                const day = date.getDate().toString().padStart(2, '0'); 
+                const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based 
+                const year = date.getFullYear(); 
+ 
+                return `${year}-${month}-${day}`; // Display format (e.g., "02-10-2024") 
+            }, 
+            setDefaultDate: true    // Ensure the default date is displayed 
+        }); 
+    }); 
+</script>
+
+<script> 
+    document.addEventListener('DOMContentLoaded', function() { 
+        new Pikaday({  
+            field: document.getElementById('date_from'), 
+            format: 'd-m-Y', // Set your desired date format 
+            defaultDate: new Date(), // Set today's date as the default 
+            toString(date, format) { 
+                // Customize the date format displayed in the input 
+                const day = date.getDate().toString().padStart(2, '0'); 
+                const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based 
+                const year = date.getFullYear(); 
+ 
+                return `${year}-${month}-${day}`; // Display format (e.g., "02-10-2024") 
+            }, 
+            setDefaultDate: true    // Ensure the default date is displayed 
+        }); 
+    }); 
+</script>
+
+  <!-- BEGIN PAGE LEVEL CUSTOM SCRIPTS -->
+  <script src="{% static 'plugins/table/datatable/datatables.js' %}"></script>
+  <!-- NOTE TO Use Copy CSV Excel PDF Print Options You Must Include These Files  -->
+  <script src="{% static 'plugins/table/datatable/button-ext/dataTables.buttons.min.js' %}"></script>
+  <script src="{% static 'plugins/table/datatable/button-ext/jszip.min.js' %}"></script>    
+  <script src="{% static 'plugins/table/datatable/button-ext/buttons.html5.min.js' %}"></script>
+  <script src="{% static 'plugins/table/datatable/button-ext/buttons.print.min.js' %}"></script>
+  <script>
+      $('#html5-extension').DataTable( {
+          "dom": "<'dt--top-section'<'row'<'col-sm-12 col-md-6 d-flex justify-content-md-start justify-content-center'B><'col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center mt-md-0 mt-3'f>>>" +
+      "<'table-responsive'tr>" +
+      "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+          buttons: {
+              buttons: [
+                 
+              ]
+          },
+          "oLanguage": {
+              "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },
+              "sInfo": "Showing page _PAGE_ of _PAGES_",
+              "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+              "sSearchPlaceholder": "Search...",
+             "sLengthMenu": "Results :  _MENU_",
+          },
+          "stripeClasses": [],
+          "lengthMenu": [7, 10, 20, 50],
+          "pageLength": 7 
+      } );
+  </script>
+  <!-- END PAGE LEVEL CUSTOM SCRIPTS -->
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function fetchContractorData() {
+        var contractorCode = $('#code').val();
+
+        if (contractorCode === "") {
+            // مسح الحقول إذا تم حذف كود المقاول
+            $('#name').val("");
+          
+            
+
+           
+            return;
+        }
+
+        $.ajax({
+            url: "{% url 'search:getcontractordata' %}",
+            data: {
+                'code': contractorCode
+
+            },
+            dataType: 'json',
+            success: function (data) {
+                $('#name').val(data.name);
+                
+                
+            }
+        });
+    }
+</script>
+{% endblock js %}
+      
+    
+    

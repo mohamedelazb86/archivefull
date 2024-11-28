@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     # my apps
     'settings',
     'contractor',
+    'document',
+    'search',
 ]
 
 MIDDLEWARE = [

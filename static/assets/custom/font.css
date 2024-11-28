@@ -18,10 +18,53 @@
   }
   th{
     color: blueviolet;
-    background-color: aquamarine;
+    color: rgb(12, 34, 236) !important;
+    background-color: rgb(160, 212, 155) !important;
+    font-size: large !important;
+    font-style:italic;
   }
-  td{
+  td {
     font-size: large;
-    color: brown;
+    color: rgb(224, 12, 12) !important;
     background-color: azure;
-  }
+    font-size: medium !important;
+}
+
+.page {
+  background: white;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.5cm;
+  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+}
+.page[size="A4"] {  
+  width: 21cm;
+  height: 29.7cm; 
+}
+.page[size="A4"][layout="landscape"] {
+  width: 29.7cm;
+  height: 21cm;  
+}
+.page[size="A3"] {
+  width: 29.7cm;
+  height: 42cm;
+}
+.page[size="A3"][layout="landscape"] {
+  width: 42cm;
+  height: 29.7cm;  
+}
+.page[size="A5"] {
+  width: 14.8cm;
+  height: 21cm;
+}
+.page[size="A5"][layout="landscape"] {
+  width: 21cm;
+  height: 14.8cm;  
+}
+
+.page[size="All"] {
+  width: 96%;
+  height: 96%;  
+}
+
+

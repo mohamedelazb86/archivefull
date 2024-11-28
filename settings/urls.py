@@ -14,4 +14,7 @@ urlpatterns = [
     path('add_sector',views.add_sector,name='add-sector'),
     path('delete_sector',views.delete_sector,name='delete-sector'),
     path('edit_sector',views.edit_sector,name='edit-sector'),
+
+    #dashbord
+    
 ]

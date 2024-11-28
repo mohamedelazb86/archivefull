@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    إضافة مستند
+{% endblock title %}
+
+{% block page_title %}
+<div class="row">
+    <h3 >  إضافة مستند خاص بـــ  <p style="color: blue;"> {{contractor.name}}</p></h3>
+</div>
+{% endblock page_title %}
+
+
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.0/css/pikaday.min.css"> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.0/pikaday.min.js"></script>
+{% endblock css %}
+    
+
+{% block body %}
+
+
+{% include 'message.py' %}
+
+<form action="{% url 'document:add-document-all' %}" method="post" enctype="multipart/form-data" class="col" >
+
+    <div class="card component-card_1 col-12">
+        <div class="card-body">
+            <div class="row">
+                    <!-- <p class="col-1" name="code" style="padding: 20px;border: 20px; border-radius: 20px; font-size: larger; background-color: rgb(207, 219, 215); color: brown; " >{{contractor.code}}</p>     -->
+                    <input type="text"  class="col-1"  name="code"          id="code" style="padding: 20px;border: 20px; border-radius: 20px; font-size: larger; background-color: rgb(207, 219, 215); color: brown; " onkeyup="fetchContractorData()">
+                    <input type="text" disabled class="col-3"  name="name"          id="name" style="padding:  20px;border: 20px; border-radius: 20px; font-size: larger; background-color: rgb(135, 171, 218); color: rgb(245, 20, 20); " >  
+                    <input type="text" disabled class="col-2"  name="archive_code"  id="archive_code" style="padding: 20px;border: 20px; border-radius: 20px; font-size: larger; background-color: rgb(166, 212, 197); color: rgb(16, 86, 236); " >  
+                    <input type="text" disabled class="col-3"  name="sector"        id="sector" style="padding: 20px;border: 20px; border-radius: 20px; font-size: larger; background-color: rgb(172, 101, 172); color: rgb(60, 207, 24); " >   
+                    <input type="text" disabled class="col-3"   name="project"       id="project" style="padding: 20px;border: 20px; border-radius: 20px; font-size: larger; background-color: rgb(186, 212, 123); color: brown; " >   
+                    
+            </div>
+            
+        </div>
+    </div>
+
+    <div style="padding: 70px;" class="col">
+        
+            {% csrf_token %}
+            
+            <div class="row">
+                                    
+                <div class="col-xl-6">
+                    <div class="form-group">
+                        <label >البيان</label>
+                        <input class="form-control form-control-lg" type="text" name="statment" id="statment">
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <label >التاريخ</label>
+                    <input type="text" class="form-control" id="date" name="date" placeholder="Select a date">
+                </div>
+                
+        
+            </div>
+            
+        <div class="row">
+
+            <div class="col-6">
+                                    
+                
+                    <label >نوع المستند</label>
+                    <select class="form-control form-control-lg" id="document_type" name="document_type" >
+                        <option disabled>أختر نوع المستند</option>
+                    
+                    {% for item in documnet_type %}
+                        <option value="{{item.id}}" style="padding: 20px;">{{item}}</option>
+                    {% endfor %}
+                        
+                    </select>
+                </div>
+            
+
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label >ملاحظات</label>
+                    <input class="form-control form-control-lg" type="text" name="notes" id="notes">
+                </div>
+            </div>
+        
+        </div>
+            <div class="col-12" style="margin: 20px;">
+                <label>الملف   </label><span class="text-danger">* صيغة المرفق pdf </span>
+                <div class="col">
+                    <input class="form-control custom-file-input" type="file" name="file_name" class="file" accept=".pdf" id="uploadPDF" onchange="PreviewImage();" required> <label class="custom-file-label" for="customFile">اختر الملف</label>
+                </div>
+            </div>
+        
+        
+                <div class="modal-footer md-button">
+                    
+                    <button type="submit" class="btn btn-primary">حفظ مستند</button>
+                </div>
+
+
+                <div class="row">
+                    <div class="col">
+                        <label >معاينة الملف</label>
+                        <iframe class="page" size="All" id="viewer" frameborder="0" scrolling="no" ></iframe>
+                    </div>
+                </div>
+        
+                
+    
+    </div>
+</form>
+
+
+
+{% endblock body %}
+
+
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function fetchContractorData() {
+        var contractorCode = $('#code').val();
+
+        if (contractorCode === "") {
+            // مسح الحقول إذا تم حذف كود المقاول
+            $('#name').val("");
+            $('#sector').val("");
+            $('#project').val("");
+            $('#archive_code').val("");
+            
+
+           
+            return;
+        }
+
+        $.ajax({
+            url: "{% url 'document:get-contractor-data' %}",
+            data: {
+                'code': contractorCode
+
+            },
+            dataType: 'json',
+            success: function (data) {
+                $('#name').val(data.name);
+                $('#sector').val(data.sector);
+                $('#project').val(data.project);
+                $('#archive_code').val(data.archive_code);
+                
+            }
+        });
+    }
+</script>
+<script> 
+    document.addEventListener('DOMContentLoaded', function() { 
+        new Pikaday({  
+            field: document.getElementById('date'), 
+            format: 'd-m-Y', // Set your desired date format 
+            defaultDate: new Date(), // Set today's date as the default 
+            toString(date, format) { 
+                // Customize the date format displayed in the input 
+                const day = date.getDate().toString().padStart(2, '0'); 
+                const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based 
+                const year = date.getFullYear(); 
+ 
+                return `${year}-${month}-${day}`; // Display format (e.g., "02-10-2024") 
+            }, 
+            setDefaultDate: true    // Ensure the default date is displayed 
+        }); 
+    }); 
+</script>
+
+
+<script type="text/javascript">
+    function PreviewImage() {
+        pdffile=document.getElementById("uploadPDF").files[0];
+        pdffile_url=URL.createObjectURL(pdffile);
+        $('#viewer').attr('src',pdffile_url);
+    }
+</script>
+{% endblock js %}
+    
+    
+    
